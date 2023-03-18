@@ -1,0 +1,67 @@
+//2593. Find Score of an array after marking all elements.
+
+class Solution {
+    public long findScore(int[] nums) {
+        
+        int n = nums.length;
+        
+        int mark[] = new int[n];
+        
+        HashMap<Integer, List<Integer>> map = new HashMap<>();
+        
+        for(int i = 0; i < n; i++)
+        {
+            int item = nums[i];
+            List<Integer> list = new ArrayList<>();
+            if(map.containsKey(item))
+            {
+                list = map.get(item);
+            }
+            list.add(i);
+                
+            map.put(item, list);
+        }
+        
+        Arrays.sort(nums);
+        int it = 0;
+        
+        long sum = 0;
+        
+        while(it <= n-1)
+        {
+            if(it != 0 && nums[it] == nums[it-1])
+            {
+                it++;
+                continue;
+            }
+            int item = nums[it];
+            List<Integer> indexes = map.get(item);
+            
+            for(Integer index: indexes)
+            {
+                if(mark[index] == -1)
+                {
+                    continue;
+                }
+                else
+                    sum += item;
+                
+                int leftIndex = index-1;
+                int rightIndex = index+1;
+
+                mark[index] = -1;
+
+                if(leftIndex >= 0)
+                    mark[leftIndex] = -1;
+                if(rightIndex <= n-1)
+                    mark[rightIndex] = -1;
+            }
+            
+            it++;
+            
+        }
+        
+        return sum;
+        
+    }
+}
